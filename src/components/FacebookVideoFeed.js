@@ -34,17 +34,17 @@ class FacebookVideoFeed extends Component {
 
   //occurs when middlepanel successfully renders
   componentDidMount() {
-   
-    this.player = VideoModule.createPlayer(VIDEO_PLAYER);
-    this.player.play({
-      source: { url: 'https://storage.googleapis.com/wishplay-v1/sunrise-beach.mp4'},
-      stereo: '2D',
-      muted: false,
-      volume: 0.1,
-    });
-
-    Environment.setBackgroundVideo(VIDEO_PLAYER);
-
+    
+     this.player = VideoModule.createPlayer(VIDEO_PLAYER);
+     this.player.play({
+       source: { url: staticAssetURL('sunrise-beach.mp4') },
+       stereo: '2D',
+       muted: false,
+       volume: 0.1,
+     });
+ 
+     Environment.setBackgroundVideo(VIDEO_PLAYER);
+ 
     this.getListOfGroups();
     this.getFBVideoList();
   }
@@ -64,13 +64,13 @@ class FacebookVideoFeed extends Component {
 
       });
       let userSubscriptions = this.state.listOfGroups;
-
+      console.log(listOfGroups);
       this.getUserFeed(userSubscriptions);
 
     });
   }
 
-  getUserFeed(userSubscriptions) { //this is really get vieos from group
+  getUserFeed(userSubscriptions) { 
     let userFeed = this.state.userFeed;
     userSubscriptions.forEach((subscription) => {
       facebookAPI.getDataUsingFacebookAPI('/' + subscription.id + '/videos?fields=type,source,object_id,story,picture,likes,comments,description,caption,height,length&limit=50', this.props.authToken).then((response) => {
@@ -78,6 +78,7 @@ class FacebookVideoFeed extends Component {
         this.setState({
           userFeed,
         });
+        console.log(userFeed);
       });
     });
   }
